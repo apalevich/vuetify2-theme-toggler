@@ -36,11 +36,11 @@
         </template>
         <v-list>
           <v-list-item
-              v-for="({value, title}, i) in themes"
+              v-for="(theme, i) in themes"
               :key="i"
-              @click="changeTheme(value)">
-            <v-list-item-title>{{title}}</v-list-item-title>
-            <uil-check v-if="title === selectedTheme" size=“24” />
+              @click="changeTheme(theme)">
+            <v-list-item-title>{{theme.title}}</v-list-item-title>
+            <uil-check v-if="theme.title === selectedTheme" size=“24” />
           </v-list-item>
         </v-list>
       </v-menu>
@@ -49,6 +49,24 @@
     <v-main>
       <v-card class="pa-3 ma-3">Some beautiful content</v-card>
     </v-main>
+
+    <!--  Snackbar  -->
+    <v-snackbar
+        v-model="snackbar"
+    >
+      Your theme changed to the {{ selectedTheme }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+            color="red"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -63,6 +81,8 @@ export default {
           {title: 'Light', value: 'light'},
           {title: 'Dark', value: 'dark'},
       ],
+      snackbar: false,
+      text: `Hello, I'm a snackbar`,
     };
   },
 
@@ -74,8 +94,10 @@ export default {
   },
 
   methods: {
-    changeTheme(theme) {
-      this.$vuetify.theme.dark = theme === 'dark';
+    changeTheme({title, value}) {
+      this.$vuetify.theme.dark = value === 'dark';
+      this.selectedTheme = title;
+      this.snackbar = true;
     },
   },
 };
