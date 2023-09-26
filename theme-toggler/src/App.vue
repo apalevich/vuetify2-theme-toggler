@@ -35,18 +35,18 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item @click="changeTheme('light')">
-            <v-list-item-title>Light Theme</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="changeTheme('dark')">
-            <v-list-item-title>Dark Theme</v-list-item-title>
+          <v-list-item
+              v-for="(theme, i) in themes"
+              :key="i"
+              @click="changeTheme(theme.value)">
+            <v-list-item-title>{{theme.title}}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
 
     <v-main>
-      Some beautiful content
+      <v-card class="pa-3 ma-3">Some beautiful content</v-card>
     </v-main>
   </v-app>
 </template>
@@ -57,10 +57,21 @@ export default {
 
   data() {
     return {
-      selectedTheme: 'light', // Default theme
-      themes: ['light', 'dark'], // List of available themes
+      selectedTheme: 'light',
+      themes: [
+          {title: 'Light', value: 'light'},
+          {title: 'Dark', value: 'dark'},
+      ],
     };
   },
+
+  created() {
+    this.themes.push({
+      title: 'System',
+      value: window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+    });
+  },
+
   methods: {
     changeTheme(theme) {
       this.$vuetify.theme.dark = theme === 'dark';
