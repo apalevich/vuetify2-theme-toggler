@@ -76,7 +76,7 @@ export default {
 
   data() {
     return {
-      selectedTheme: 'Light',
+      selectedTheme: localStorage.getItem('selectedTheme') || 'Light',
       themes: [
           {title: 'Light', value: 'light'},
           {title: 'Dark', value: 'dark'},
@@ -91,6 +91,7 @@ export default {
       title: 'System',
       value: window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
     });
+    this.$vuetify.theme.dark = this.themes.find(el => el.title=='Light').value;
   },
 
   methods: {
@@ -98,6 +99,8 @@ export default {
       this.$vuetify.theme.dark = value === 'dark';
       this.selectedTheme = title;
       this.snackbar = true;
+
+      localStorage.setItem('selectedTheme', title);
     },
   },
 };
