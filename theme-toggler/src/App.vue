@@ -36,10 +36,11 @@
         </template>
         <v-list>
           <v-list-item
-              v-for="(theme, i) in themes"
+              v-for="({value, title}, i) in themes"
               :key="i"
-              @click="changeTheme(theme.value)">
-            <v-list-item-title>{{theme.title}}</v-list-item-title>
+              @click="changeTheme(value)">
+            <v-list-item-title>{{title}}</v-list-item-title>
+            <uil-check v-if="title === selectedTheme" size=“24” />
           </v-list-item>
         </v-list>
       </v-menu>
@@ -57,7 +58,7 @@ export default {
 
   data() {
     return {
-      selectedTheme: 'light',
+      selectedTheme: 'Light',
       themes: [
           {title: 'Light', value: 'light'},
           {title: 'Dark', value: 'dark'},
